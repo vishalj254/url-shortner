@@ -166,7 +166,7 @@ export default function Home() {
                   Short URL: {cardData.shortUrl}
                 </Typography>
                 <Typography variant="body2" component="p">
-                  Date: {cardData.date}
+                  Date: {new Date(cardData.date).toLocaleDateString()}
                 </Typography>
               </CardContent>
               <CardActions>
