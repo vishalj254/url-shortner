@@ -32,8 +32,8 @@ export default React.memo(() => {
         .doc(urlCode)
         .get();
       if (document.data()) {
-        // window.history.go(-(window.history.length - 1));
-        window.open(document.data().longUrl, "_blank");
+        window.history.go(-(window.history.length - 1));
+        window.open(document.data().longUrl, "_self");
       } else {
         setisLoading(false);
       }

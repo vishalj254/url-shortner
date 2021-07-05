@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Avatar } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -52,6 +52,7 @@ export default function Home() {
   const [error, seterror] = useState(false);
   const [url, setUrl] = useState("");
   const [isSubmitted, setisSubmitted] = useState(false);
+  const [cardData, setcardData] = useState({});
 
   function validateURL(link) {
     if (link.indexOf("http://") == 0 || link.indexOf("https://") == 0) {
@@ -87,7 +88,7 @@ export default function Home() {
           urlCode,
           date: new Date(),
         };
-        console.log(data);
+        setcardData(data);
         firebase_app
           .firestore()
           .collection("url")
@@ -156,22 +157,27 @@ export default function Home() {
                   color="textSecondary"
                   gutterBottom
                 >
-                  Word of the Day
+                  {cardData.urlCode}
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  hey
+                  Autual URL: {cardData.longUrl}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
-                  adjective
+                  Short URL: {cardData.shortUrl}
                 </Typography>
                 <Typography variant="body2" component="p">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
+                  Date: {cardData.data}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(cardData.shortUrl);
+                  }}
+                >
+                  Copy Short URL
+                </Button>
               </CardActions>
             </Card>
             <Button
@@ -186,24 +192,6 @@ export default function Home() {
           </>
         )}
       </div>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span>
-            <Avatar
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              width={72}
-              height={16}
-            />
-          </span>
-        </a>
-      </footer>
     </Container>
   );
 }
